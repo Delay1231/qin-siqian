@@ -1,0 +1,1627 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>秦司千｜易烊千玺互动小站</title>
+  <meta name="description" content="秦司千：一个轻量、好玩、可互动的易烊千玺主题小站（小卡、照片墙、小游戏、留言墙）。单文件离线可用。" />
+
+  <style>
+    :root{
+      --bg: #0b0f17;
+      --bg2:#0f172a;
+      --card:#0f172a;
+      --card2:#111c33;
+      --text:#e5e7eb;
+      --muted:#a7b0c0;
+      --line: rgba(255,255,255,.10);
+      --brand:#7c3aed;
+      --brand2:#22c55e;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --r: 18px;
+      --r2: 24px;
+      --pad: 18px;
+      --max: 1100px;
+      --focus: 0 0 0 3px rgba(124, 58, 237, .35);
+    }
+    [data-theme="light"]{
+      --bg:#f6f7fb;
+      --bg2:#ffffff;
+      --card:#ffffff;
+      --card2:#ffffff;
+      --text:#0f172a;
+      --muted:#5b6476;
+      --line: rgba(15,23,42,.12);
+      --shadow: 0 18px 45px rgba(15,23,42,.12);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC","Noto Sans CJK SC","Microsoft YaHei", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 15% 0%, rgba(124,58,237,.35), transparent 60%),
+                  radial-gradient(1000px 500px at 80% 20%, rgba(34,197,94,.22), transparent 55%),
+                  linear-gradient(180deg, var(--bg), var(--bg2));
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: color-mix(in srgb, var(--bg2) 70%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar .inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 12px 0;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; text-decoration:none;
+    }
+    .logo{
+      width:36px; height:36px; border-radius:12px;
+      background: conic-gradient(from 180deg, var(--brand), var(--brand2), var(--brand));
+      box-shadow: 0 10px 22px rgba(124,58,237,.22);
+    }
+    .brand strong{font-size:16px; letter-spacing:.5px}
+    .brand small{display:block; color:var(--muted); font-size:12px; margin-top:2px}
+    nav{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 11px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background: color-mix(in srgb, var(--card) 84%, transparent);
+      text-decoration:none;
+      font-size:13px;
+      color:var(--muted);
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    .chip:hover{transform: translateY(-1px); border-color: color-mix(in srgb, var(--brand) 45%, var(--line)); color:var(--text)}
+    .chip:focus{outline:none; box-shadow: var(--focus)}
+    .chip.primary{
+      color: var(--text);
+      border-color: color-mix(in srgb, var(--brand) 50%, var(--line));
+      background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 22%, var(--card)), color-mix(in srgb, var(--brand) 10%, var(--card)));
+    }
+    .hero{
+      padding: 24px 0 10px;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items:stretch;
+    }
+    @media (max-width: 920px){
+      .heroGrid{grid-template-columns:1fr; }
+    }
+    .panel{
+      border:1px solid var(--line);
+      border-radius: var(--r2);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--card) 85%, transparent), color-mix(in srgb, var(--card2) 95%, transparent));
+      box-shadow: var(--shadow);
+    }
+    .panel.padded{padding: 20px}
+    .kicker{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size: 12px; color: var(--muted);
+      border: 1px dashed color-mix(in srgb, var(--brand) 35%, var(--line));
+      padding: 7px 10px;
+      border-radius: 999px;
+      width: fit-content;
+      background: color-mix(in srgb, var(--card) 82%, transparent);
+    }
+    h1{
+      margin: 12px 0 10px;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height:1.08;
+      letter-spacing: .4px;
+    }
+    .sub{
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+      margin: 0 0 14px;
+    }
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--card) 86%, transparent);
+      color: var(--text);
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      font-size: 14px;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: color-mix(in srgb, var(--brand) 45%, var(--line))}
+    .btn:focus{outline:none; box-shadow: var(--focus)}
+    .btn.primary{
+      border-color: color-mix(in srgb, var(--brand) 55%, var(--line));
+      background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 28%, var(--card)), color-mix(in srgb, var(--brand) 10%, var(--card)));
+    }
+    .btn.good{
+      border-color: color-mix(in srgb, var(--brand2) 55%, var(--line));
+      background: linear-gradient(180deg, color-mix(in srgb, var(--brand2) 22%, var(--card)), color-mix(in srgb, var(--brand2) 10%, var(--card)));
+    }
+    .stats{
+      display:flex; gap:12px; flex-wrap:wrap; margin-top: 14px;
+      color: var(--muted); font-size: 13px;
+    }
+    .stat{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--card) 90%, transparent);
+    }
+    .photoHero{
+      overflow:hidden;
+      position:relative;
+      min-height: 260px;
+      border-radius: var(--r2);
+    }
+    .photoHero img{
+      width:100%; height:100%; object-fit:cover; display:block;
+      filter: saturate(1.08) contrast(1.05);
+      transform: scale(1.02);
+    }
+    .photoHero::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.45));
+    }
+    .photoBadge{
+      position:absolute; left:14px; bottom:14px;
+      display:flex; flex-direction:column; gap:6px;
+      padding: 10px 12px;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius: 16px;
+      background: rgba(0,0,0,.28);
+      color: #fff;
+      backdrop-filter: blur(8px);
+      max-width: 90%;
+    }
+    .photoBadge b{font-size: 13px}
+    .photoBadge span{font-size:12px; opacity:.86; line-height:1.3}
+    section{padding: 22px 0}
+    .sectionTitle{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .sectionTitle h2{
+      margin:0;
+      font-size: 20px;
+      letter-spacing:.2px;
+    }
+    .sectionTitle p{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--card) 92%, transparent), color-mix(in srgb, var(--card2) 98%, transparent));
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      overflow:hidden;
+    }
+    .card .hd{padding: 14px 14px 10px}
+    .card .hd h3{margin:0 0 6px; font-size: 16px}
+    .card .hd .muted{color:var(--muted); font-size:13px; line-height:1.55}
+    .card .bd{padding: 0 14px 14px}
+    .span-6{grid-column: span 6}
+    .span-4{grid-column: span 4}
+    .span-8{grid-column: span 8}
+    .span-12{grid-column: span 12}
+    @media (max-width: 900px){
+      .span-6,.span-4,.span-8{grid-column: span 12}
+    }
+
+    /* photo wall */
+    .photoGrid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    .pItem{
+      grid-column: span 4;
+      border-radius: var(--r);
+      overflow:hidden;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      cursor:pointer;
+      position:relative;
+      min-height: 170px;
+    }
+    .pItem img{width:100%; height:100%; object-fit:cover; display:block; transition: transform .18s ease}
+    .pItem:hover img{transform: scale(1.04)}
+    .pCap{
+      position:absolute; inset:auto 10px 10px 10px;
+      padding: 9px 10px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.28);
+      color:#fff;
+      backdrop-filter: blur(8px);
+      border:1px solid rgba(255,255,255,.14);
+      font-size: 12px;
+      line-height:1.3;
+    }
+    @media (max-width: 900px){ .pItem{grid-column: span 6} }
+    @media (max-width: 520px){ .pItem{grid-column: span 12} }
+
+    /* mini-cards */
+    .miniCards{
+      display:grid;
+      grid-template-columns: repeat(12,1fr);
+      gap: 12px;
+    }
+    .mCard{
+      grid-column: span 4;
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      overflow:hidden;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--card) 92%, transparent), color-mix(in srgb, var(--card2) 98%, transparent));
+      cursor:pointer;
+      position:relative;
+      transition: transform .12s ease, border-color .12s ease;
+    }
+    .mCard:hover{transform: translateY(-2px); border-color: color-mix(in srgb, var(--brand) 40%, var(--line))}
+    .mImg{height: 150px; background:#111; overflow:hidden}
+    .mImg img{width:100%; height:100%; object-fit:cover; display:block; filter:saturate(1.05) contrast(1.05)}
+    .mBody{padding: 12px 12px 14px}
+    .mTitle{display:flex; align-items:center; justify-content:space-between; gap:8px}
+    .mTitle b{font-size: 15px}
+    .mTag{
+      font-size: 12px; color: var(--muted);
+      border:1px solid var(--line);
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      white-space:nowrap;
+    }
+    .mDesc{margin-top: 8px; font-size: 13px; color: var(--muted); line-height: 1.55}
+    @media (max-width: 900px){ .mCard{grid-column: span 6} }
+    @media (max-width: 520px){ .mCard{grid-column: span 12} }
+
+    /* message wall */
+    .formRow{display:flex; gap:10px; flex-wrap:wrap}
+    input, textarea{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      color: var(--text);
+      outline:none;
+      font-size: 14px;
+    }
+    input:focus, textarea:focus{box-shadow: var(--focus); border-color: color-mix(in srgb, var(--brand) 45%, var(--line))}
+    textarea{min-height: 90px; resize: vertical}
+    .msgList{display:flex; flex-direction:column; gap:10px; margin-top: 12px}
+    .msg{
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      padding: 12px 12px;
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+    }
+    .msgTop{display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom: 8px}
+    .msgName{font-weight:700; font-size: 13px}
+    .msgTime{color: var(--muted); font-size: 12px}
+    .msgText{color: var(--text); font-size: 14px; line-height:1.6; white-space:pre-wrap}
+    .msgActions{display:flex; gap:8px; margin-top: 10px; flex-wrap:wrap}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      color: var(--muted);
+      cursor:pointer;
+      font-size: 13px;
+    }
+    .pill:hover{color: var(--text); border-color: color-mix(in srgb, var(--brand) 35%, var(--line))}
+    footer{
+      padding: 26px 0 40px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--line);
+      margin-top: 10px;
+    }
+    .credits{
+      display:flex; flex-direction:column; gap:8px;
+      margin-top: 10px;
+    }
+    .credits a{color: color-mix(in srgb, var(--brand) 75%, var(--text)); text-decoration:none}
+    .credits a:hover{text-decoration:underline}
+
+    /* modal */
+    .modalBack{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 100;
+    }
+    .modalBack.show{display:flex}
+    .modal{
+      width:min(960px, 100%);
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--card) 95%, transparent);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      max-height: 86vh;
+      display:flex;
+      flex-direction:column;
+    }
+    .modalTop{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: color-mix(in srgb, var(--card) 96%, transparent);
+    }
+    .modalTop b{font-size: 14px}
+    .modalClose{
+      width:38px; height:38px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      cursor:pointer;
+      color: var(--muted);
+    }
+    .modalClose:hover{color: var(--text); border-color: color-mix(in srgb, var(--brand) 35%, var(--line))}
+    .modalBody{
+      padding: 14px;
+      overflow:auto;
+    }
+
+    /* confetti */
+    .confetti{
+      position:fixed; inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index: 120;
+      display:none;
+    }
+    .confetti.show{display:block}
+    .c{
+      position:absolute;
+      width:10px; height:14px;
+      border-radius:3px;
+      opacity:.95;
+      animation: fall linear forwards;
+    }
+    @keyframes fall{
+      from{transform: translate3d(var(--x), -12vh, 0) rotate(0deg)}
+      to{transform: translate3d(var(--x2), 110vh, 0) rotate(540deg)}
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="inner">
+        <a class="brand" href="#top" aria-label="回到顶部">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <strong>秦司千</strong>
+            <small>易烊千玺互动小站（离线单页）</small>
+          </div>
+        </a>
+        <nav aria-label="站内导航">
+          <a class="chip" href="#photos">照片墙</a>
+          <a class="chip" href="#cards">人物小卡</a>
+          <a class="chip" href="#games">小游戏</a>
+          <a class="chip" href="#wall">留言墙</a>
+          <button class="chip primary" id="themeBtn" type="button">🌓 主题</button>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <main id="top">
+    <header class="hero">
+      <div class="wrap heroGrid">
+        <div class="panel padded">
+          <div class="kicker">✨ 秦司千 · 互动入口</div>
+          <h1>把“喜欢”做成小游戏：<br/>一键抽卡、点亮收藏、解锁彩蛋</h1>
+          <p class="sub">
+            这里是一个偏“娱乐向”的易烊千玺主题小站：你可以浏览照片、点击人物小卡、抽卡收藏、做个小测验，
+            也可以在留言墙留下你的话（仅保存在本地浏览器）。
+          </p>
+
+          <div class="row">
+            <button class="btn primary" id="drawBtn" type="button">🎴 立即抽一张小卡</button>
+            <button class="btn good" id="confettiBtn" type="button">🎉 放个小烟花</button>
+            <a class="btn" href="#cards">👉 去看小卡</a>
+            <a class="btn" href="#photos">🖼️ 看照片</a>
+          </div>
+
+          <div class="stats" id="quickStats">
+            <div class="stat">🎒 我的卡册：<b id="colCount">0</b> 张</div>
+            <div class="stat">❤️ 总点赞：<b id="likeCount">0</b></div>
+            <div class="stat">🕹️ 小游戏记录：<b id="gameBest">-</b></div>
+          </div>
+        </div>
+
+        <div class="panel photoHero" aria-label="封面照片">
+          <img id="heroImg" alt="易烊千玺照片" loading="lazy" />
+          <div class="photoBadge">
+            <b id="heroTitle">照片加载中…</b>
+            <span id="heroCredit"></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="photos">
+      <div class="wrap">
+        <div class="sectionTitle">
+          <div>
+            <h2>照片墙</h2>
+            <p>点开查看大图与来源（图片来自 Wikimedia Commons，部分为 CC BY-SA 4.0）。</p>
+          </div>
+          <div class="row">
+            <button class="btn" id="shufflePhotosBtn" type="button">🔀 随机排序</button>
+            <button class="btn" id="openHeroBtn" type="button">🔎 查看封面图</button>
+          </div>
+        </div>
+
+        <div class="photoGrid" id="photoGrid" aria-label="照片列表"></div>
+      </div>
+    </section>
+
+    <section id="cards">
+      <div class="wrap">
+        <div class="sectionTitle">
+          <div>
+            <h2>人物小卡</h2>
+            <p>更轻、更好点：点击卡片→看内容→点赞/收藏→解锁彩蛋。</p>
+          </div>
+          <div class="row">
+            <button class="btn primary" id="drawBtn2" type="button">🎴 再抽一张</button>
+            <button class="btn" id="openAlbumBtn" type="button">📚 打开我的卡册</button>
+            <button class="btn" id="clearAlbumBtn" type="button" title="只清空收藏，不影响留言">🧹 清空收藏</button>
+          </div>
+        </div>
+
+        <div class="miniCards" id="miniCards" aria-label="小卡列表"></div>
+
+        <div class="grid" style="margin-top:14px">
+          <div class="card span-12">
+            <div class="hd">
+              <h3>代表作品（仅列少量）</h3>
+              <div class="muted">为了避免“作品刷屏”，这里只留 3 个占位示例；你要我换成你想要的具体清单也行。</div>
+            </div>
+            <div class="bd">
+              <div class="row" style="gap:8px">
+                <span class="chip" style="pointer-events:none">🎬 电影：少量展示</span>
+                <span class="chip" style="pointer-events:none">📺 综艺：少量展示</span>
+                <span class="chip" style="pointer-events:none">🎵 音乐：少量展示</span>
+              </div>
+              <ul style="margin:10px 0 0; padding-left: 18px; color: var(--muted); line-height:1.7">
+                <li>电影/角色：你指定一个，我就把“卡片内容”做成更有梗的互动。</li>
+                <li>舞台/演出：可以做成“节奏按键”小游戏。</li>
+                <li>歌曲/专辑：可以做成“听前奏猜歌”（本地音频也支持）。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="games">
+      <div class="wrap">
+        <div class="sectionTitle">
+          <div>
+            <h2>小游戏</h2>
+            <p>轻量两项：小测验 + 记忆翻牌（都只在本地存储）。</p>
+          </div>
+          <div class="row">
+            <button class="btn" id="resetGamesBtn" type="button">♻️ 重置记录</button>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card span-6">
+            <div class="hd">
+              <h3>🎯 3 题小测验</h3>
+              <div class="muted">偏娱乐：答完给你一个“称号”。</div>
+            </div>
+            <div class="bd" id="quiz"></div>
+          </div>
+
+          <div class="card span-6">
+            <div class="hd">
+              <h3>🧠 记忆翻牌</h3>
+              <div class="muted">用照片做卡面：匹配完成越快越好。</div>
+            </div>
+            <div class="bd">
+              <div class="row" style="margin-bottom:10px">
+                <button class="btn primary" id="startMemBtn" type="button">开始</button>
+                <button class="btn" id="restartMemBtn" type="button">重来</button>
+                <span class="chip" style="pointer-events:none">⏱️ <b id="memTime">0.0</b>s</span>
+                <span class="chip" style="pointer-events:none">✅ <b id="memMatch">0</b>/6</span>
+              </div>
+              <div class="grid" id="memGrid" style="gap:10px"></div>
+              <div class="sub" style="margin-top:10px">提示：点两张卡，若相同则保留；全部匹配会自动放彩纸。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="wall">
+      <div class="wrap">
+        <div class="sectionTitle">
+          <div>
+            <h2>留言墙</h2>
+            <p>你的留言只保存在本机浏览器（localStorage），不会上传到服务器。</p>
+          </div>
+          <div class="row">
+            <button class="btn" id="sortHotBtn" type="button">🔥 热门优先</button>
+            <button class="btn" id="sortNewBtn" type="button">🕒 最新优先</button>
+            <button class="btn" id="clearMsgBtn" type="button" title="清空本地留言">🧹 清空留言</button>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card span-4">
+            <div class="hd">
+              <h3>写一条</h3>
+              <div class="muted">可以写祝福、打卡、梗、或者你最想说的一句话。</div>
+            </div>
+            <div class="bd">
+              <div class="formRow">
+                <input id="nameInput" placeholder="署名（可选）" maxlength="20" />
+                <textarea id="msgInput" placeholder="留言内容…" maxlength="240"></textarea>
+                <button class="btn primary" id="postBtn" type="button">发布</button>
+                <button class="btn" id="randomPromptBtn" type="button">🎲 给我一个话题</button>
+              </div>
+              <div class="sub" style="margin-top:10px">小提醒：文明发言，别放隐私信息。</div>
+            </div>
+          </div>
+
+          <div class="card span-8">
+            <div class="hd">
+              <h3>大家的留言</h3>
+              <div class="muted">支持点赞、置顶（本地）、一键复制。</div>
+            </div>
+            <div class="bd">
+              <div class="msgList" id="msgList"></div>
+              <div class="sub" id="emptyTip" style="display:none; margin-top:8px">还没有留言，来当第一个！</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <div>© 秦司千｜单文件离线版。你可以直接把这个 HTML 丢到任何静态服务器上使用。</div>
+        <div class="credits" id="credits"></div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Modal -->
+  <div class="modalBack" id="modalBack" role="dialog" aria-modal="true" aria-label="弹窗">
+    <div class="modal">
+      <div class="modalTop">
+        <b id="modalTitle">详情</b>
+        <button class="modalClose" id="modalClose" aria-label="关闭">✕</button>
+      </div>
+      <div class="modalBody" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Confetti -->
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<script>
+/** ======================
+ *  数据：照片与小卡
+ *  ====================== */
+const PHOTOS = [
+  {
+    id: "p_2024_tiff",
+    title: "东京国际电影节 · 2024",
+    img: "https://commons.wikimedia.org/wiki/Special:FilePath/2024%20Jackson%20Yee.jpg?width=1400",
+    link: "https://commons.wikimedia.org/wiki/File:2024_Jackson_Yee.jpg",
+    credit: "Siup00 / CC BY-SA 4.0"
+  },
+  {
+    id: "p_2025_concert",
+    title: "Que Xue Concert · 2025",
+    img: "https://commons.wikimedia.org/wiki/Special:FilePath/Jackson%20Yee%20at%20Que%20Xue%20Concert%20in%202025.jpg?width=1400",
+    link: "https://commons.wikimedia.org/wiki/File:Jackson_Yee_at_Que_Xue_Concert_in_2025.jpg",
+    credit: "Siup00 / CC BY-SA 4.0"
+  },
+  {
+    id: "p_singer_2018",
+    title: "歌手形象 · 2018",
+    img: "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%AD%8C%E6%89%8B%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA.jpg?width=1200",
+    link: "https://commons.wikimedia.org/wiki/File:%E6%AD%8C%E6%89%8B%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA.jpg",
+    credit: "刹寂_易烊千玺个站 / CC BY-SA 4.0"
+  },
+  {
+    id: "p_adidas_2020",
+    title: "Adidas · 2020",
+    img: "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA%E9%98%BF%E8%BF%AA%E8%BE%BE%E6%96%AF.jpg?width=1200",
+    link: "https://commons.wikimedia.org/wiki/File:%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA%E9%98%BF%E8%BF%AA%E8%BE%BE%E6%96%AF.jpg",
+    credit: "刹寂_易烊千玺个站 / CC BY-SA 4.0"
+  },
+  {
+    id: "p_2019_suer",
+    title: "Su Er Concert · 2019",
+    img: "https://commons.wikimedia.org/wiki/Special:FilePath/2019%20Jackson%20Yee%20Concert.jpg?width=1400",
+    link: "https://commons.wikimedia.org/wiki/File:2019_Jackson_Yee_Concert.jpg",
+    credit: "Siup00 / CC BY-SA 4.0"
+  },
+  {
+    id: "p_2019_cute",
+    title: "演唱会照片 · 2019",
+    img: "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA_%E5%B8%85%E7%85%A7.jpg?width=1200",
+    link: "https://commons.wikimedia.org/wiki/File:%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA_%E5%B8%85%E7%85%A7.jpg",
+    credit: "_SugarOrSalt_ / CC BY-SA 4.0"
+  }
+];
+
+const CARDS = [
+  {
+    id:"c_stage",
+    title:"舞台能量卡",
+    tag:"节奏",
+    emoji:"🎤",
+    photo:"p_2019_suer",
+    desc:"点我看看“节奏挑战”。你可以跟着节拍点按按钮，连击越多越好（纯娱乐）。",
+    actions:[
+      {label:"▶ 节奏开场", type:"beat"},
+      {label:"🎲 随机挑战", type:"prompt"}
+    ]
+  },
+  {
+    id:"c_film",
+    title:"电影质感卡",
+    tag:"镜头",
+    emoji:"🎬",
+    photo:"p_2024_tiff",
+    desc:"把“电影感”做成互动：随机给你一个镜头任务（比如：慢走、回头、定格 2 秒）。",
+    actions:[
+      {label:"🎞️ 来个镜头任务", type:"shot"},
+      {label:"✨ 放彩纸", type:"confetti"}
+    ]
+  },
+  {
+    id:"c_focus",
+    title:"专注力卡",
+    tag:"坚持",
+    emoji:"🧠",
+    photo:"p_singer_2018",
+    desc:"小游戏向：给你一个 10 秒专注挑战——盯住小点点不分神（别眨眼当然也行）。",
+    actions:[
+      {label:"🟣 开始专注挑战", type:"focus"},
+      {label:"🧩 翻牌去", type:"goto_mem"}
+    ]
+  },
+  {
+    id:"c_smile",
+    title:"笑容彩蛋卡",
+    tag:"彩蛋",
+    emoji:"😄",
+    photo:"p_2019_cute",
+    desc:"这张卡藏了彩蛋：连续点赞 3 次，会触发一个小惊喜。",
+    actions:[
+      {label:"❤️ 连点点赞", type:"triple_like"},
+      {label:"📌 复制祝福语", type:"copy_bless"}
+    ]
+  },
+  {
+    id:"c_style",
+    title:"穿搭灵感卡",
+    tag:"风格",
+    emoji:"🧥",
+    photo:"p_adidas_2020",
+    desc:"纯娱乐穿搭局：随机给你 1 个“穿搭关键词”，你可以写在留言墙里当打卡。",
+    actions:[
+      {label:"🧷 抽一个关键词", type:"style"},
+      {label:"📝 去留言墙", type:"goto_wall"}
+    ]
+  },
+  {
+    id:"c_random",
+    title:"随机小卡",
+    tag:"盲盒",
+    emoji:"🎁",
+    photo:"p_2025_concert",
+    desc:"盲盒卡：会随机打开另一张卡，并附带一个“今日好运签”。",
+    actions:[
+      {label:"🎴 再抽一张", type:"draw"},
+      {label:"🍀 好运签", type:"luck"}
+    ]
+  }
+];
+
+/** ======================
+ *  本地存储
+ *  ====================== */
+const KEY = "QSQ_SITE_V1";
+const state = loadState() || {
+  theme: "dark",
+  likes: {},        // per card id
+  collected: [],    // card ids
+  best: null,       // best memory time
+  msgSort: "new",
+  messages: [],     // {id,name,text,ts,likes,pin}
+  streak: 0         // for easter egg
+};
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(KEY) || ""); }catch(e){ return null; }
+}
+
+/** ======================
+ *  DOM helpers
+ *  ====================== */
+const $ = (s, el=document)=> el.querySelector(s);
+const $$ = (s, el=document)=> Array.from(el.querySelectorAll(s));
+const fmtTime = (ts)=> {
+  const d = new Date(ts);
+  const pad = (n)=> String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
+const escapeHtml = (str)=> str.replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+
+/** ======================
+ *  Theme
+ *  ====================== */
+function applyTheme(){
+  document.documentElement.dataset.theme = state.theme === "light" ? "light" : "dark";
+}
+$("#themeBtn").addEventListener("click", ()=>{
+  state.theme = (state.theme === "light") ? "dark" : "light";
+  save(); applyTheme();
+});
+applyTheme();
+
+/** ======================
+ *  Hero & credits
+ *  ====================== */
+let heroIndex = 0;
+function setHero(i){
+  heroIndex = ((i % PHOTOS.length) + PHOTOS.length) % PHOTOS.length;
+  const p = PHOTOS[heroIndex];
+  $("#heroImg").src = p.img;
+  $("#heroTitle").textContent = p.title;
+  $("#heroCredit").innerHTML = `来源：<a href="${p.link}" target="_blank" rel="noreferrer" style="color:#fff; text-decoration:underline">${p.credit}</a>`;
+}
+setHero(0);
+
+$("#openHeroBtn").addEventListener("click", ()=> openPhotoModal(PHOTOS[heroIndex]) );
+
+function renderCredits(){
+  const uniq = new Map();
+  PHOTOS.forEach(p=> uniq.set(p.link, p));
+  const lines = Array.from(uniq.values()).map(p=>{
+    return `• <a href="${p.link}" target="_blank" rel="noreferrer">${p.title}</a>（${p.credit}）`;
+  }).join("<br/>");
+  $("#credits").innerHTML = `<div><b>图片致谢：</b><br/>${lines}</div>
+  <div>提示：即使图片在 Commons 上是自由许可，人物的肖像权/宣传权仍可能对某些用途有限制；本页仅作学习与展示。</div>`;
+}
+renderCredits();
+
+/** ======================
+ *  Photo wall
+ *  ====================== */
+function renderPhotos(list){
+  const grid = $("#photoGrid");
+  grid.innerHTML = "";
+  list.forEach((p)=>{
+    const div = document.createElement("div");
+    div.className = "pItem";
+    div.tabIndex = 0;
+    div.innerHTML = `
+      <img loading="lazy" alt="${escapeHtml(p.title)}" src="${p.img}">
+      <div class="pCap"><b>${escapeHtml(p.title)}</b><br/><span style="opacity:.86">${escapeHtml(p.credit)}</span></div>
+    `;
+    div.addEventListener("click", ()=> openPhotoModal(p));
+    div.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openPhotoModal(p);} });
+    grid.appendChild(div);
+  });
+}
+renderPhotos(PHOTOS);
+
+$("#shufflePhotosBtn").addEventListener("click", ()=>{
+  const arr = [...PHOTOS].sort(()=> Math.random()-0.5);
+  renderPhotos(arr);
+});
+
+/** ======================
+ *  Modal
+ *  ====================== */
+const modalBack = $("#modalBack");
+const modalBody = $("#modalBody");
+const modalTitle = $("#modalTitle");
+function openModal(title, html){
+  modalTitle.textContent = title;
+  modalBody.innerHTML = html;
+  modalBack.classList.add("show");
+  // focus for accessibility
+  $("#modalClose").focus();
+}
+function closeModal(){ modalBack.classList.remove("show"); modalBody.innerHTML=""; }
+$("#modalClose").addEventListener("click", closeModal);
+modalBack.addEventListener("click", (e)=>{ if(e.target === modalBack) closeModal(); });
+document.addEventListener("keydown", (e)=>{ if(e.key==="Escape" && modalBack.classList.contains("show")) closeModal(); });
+
+function openPhotoModal(p){
+  openModal("照片查看", `
+    <div style="display:grid; grid-template-columns: 1fr; gap:12px">
+      <img alt="${escapeHtml(p.title)}" src="${p.img}" style="width:100%; border-radius:18px; border:1px solid var(--line); background:var(--bg2)" />
+      <div class="row" style="justify-content:space-between; align-items:flex-start; gap:12px">
+        <div>
+          <div style="font-weight:800; font-size:16px">${escapeHtml(p.title)}</div>
+          <div style="color:var(--muted); font-size:13px; margin-top:6px">图片来源：${escapeHtml(p.credit)}</div>
+        </div>
+        <div class="row">
+          <a class="btn" href="${p.link}" target="_blank" rel="noreferrer">打开来源</a>
+          <button class="btn primary" type="button" id="setAsHeroBtn">设为封面</button>
+        </div>
+      </div>
+    </div>
+  `);
+  setTimeout(()=>{
+    const btn = $("#setAsHeroBtn");
+    if(btn){
+      btn.addEventListener("click", ()=>{
+        const idx = PHOTOS.findIndex(x=>x.id===p.id);
+        if(idx>=0) setHero(idx);
+        closeModal();
+      });
+    }
+  }, 0);
+}
+
+/** ======================
+ *  Cards
+ *  ====================== */
+function cardLikes(id){ return state.likes[id] || 0; }
+function isCollected(id){ return state.collected.includes(id); }
+
+function renderQuickStats(){
+  $("#colCount").textContent = state.collected.length;
+  const totalLikes = Object.values(state.likes).reduce((a,b)=>a+(b||0), 0);
+  $("#likeCount").textContent = totalLikes;
+  $("#gameBest").textContent = state.best ? `${state.best.toFixed(1)}s` : "-";
+}
+renderQuickStats();
+
+function renderCards(){
+  const box = $("#miniCards");
+  box.innerHTML = "";
+  CARDS.forEach(c=>{
+    const p = PHOTOS.find(x=>x.id===c.photo) || PHOTOS[0];
+    const div = document.createElement("div");
+    div.className = "mCard";
+    div.tabIndex = 0;
+    div.innerHTML = `
+      <div class="mImg"><img loading="lazy" alt="${escapeHtml(c.title)}" src="${p.img}"></div>
+      <div class="mBody">
+        <div class="mTitle">
+          <b>${c.emoji} ${escapeHtml(c.title)}</b>
+          <span class="mTag">${escapeHtml(c.tag)} · ❤️ ${cardLikes(c.id)}</span>
+        </div>
+        <div class="mDesc">${escapeHtml(c.desc)}</div>
+        <div class="row" style="margin-top:10px">
+          <span class="chip" style="pointer-events:none">${isCollected(c.id) ? "✅ 已收藏" : "➕ 可收藏"}</span>
+          <span class="chip" style="pointer-events:none">点击展开</span>
+        </div>
+      </div>
+    `;
+    div.addEventListener("click", ()=> openCard(c.id));
+    div.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openCard(c.id);} });
+    box.appendChild(div);
+  });
+}
+renderCards();
+
+function openCard(cardId){
+  const c = CARDS.find(x=>x.id===cardId);
+  if(!c) return;
+  const p = PHOTOS.find(x=>x.id===c.photo) || PHOTOS[0];
+
+  const likeN = cardLikes(c.id);
+  const collected = isCollected(c.id);
+
+  const actionBtns = (c.actions || []).map((a,idx)=>`<button class="btn ${idx===0?'primary':''}" type="button" data-act="${a.type}">${escapeHtml(a.label)}</button>`).join("");
+
+  openModal("人物小卡", `
+    <div style="display:grid; grid-template-columns: 1fr; gap:12px">
+      <img alt="${escapeHtml(c.title)}" src="${p.img}" style="width:100%; max-height:380px; object-fit:cover; border-radius:18px; border:1px solid var(--line)" />
+      <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:flex-start">
+        <div>
+          <div style="font-weight:900; font-size:18px">${c.emoji} ${escapeHtml(c.title)}</div>
+          <div style="margin-top:6px; color:var(--muted); line-height:1.7">${escapeHtml(c.desc)}</div>
+          <div class="row" style="margin-top:10px">
+            <span class="chip" style="pointer-events:none">标签：${escapeHtml(c.tag)}</span>
+            <span class="chip" style="pointer-events:none">❤️ 点赞：<b id="cardLikeNum">${likeN}</b></span>
+            <span class="chip" style="pointer-events:none">🎒 ${collected ? "已在卡册" : "未收藏"}</span>
+          </div>
+        </div>
+        <div class="row" style="align-items:center">
+          <button class="btn" type="button" id="likeCardBtn">❤️ 点赞</button>
+          <button class="btn good" type="button" id="collectCardBtn">${collected ? "✅ 已收藏" : "➕ 收藏"}</button>
+          <button class="btn" type="button" id="nextCardBtn">🎴 随机下一张</button>
+        </div>
+      </div>
+
+      <div class="panel padded" style="padding:14px">
+        <div style="font-weight:800; margin-bottom:10px">趣味按钮</div>
+        <div class="row" id="actionRow">${actionBtns}</div>
+        <div class="sub" id="actionResult" style="margin-top:10px"></div>
+        <div class="row" style="margin-top:8px">
+          <a class="btn" href="${p.link}" target="_blank" rel="noreferrer">查看图片来源</a>
+        </div>
+      </div>
+    </div>
+  `);
+
+  setTimeout(()=>{
+    const likeBtn = $("#likeCardBtn");
+    const collectBtn = $("#collectCardBtn");
+    const nextBtn = $("#nextCardBtn");
+    const likeNum = $("#cardLikeNum");
+    const res = $("#actionResult");
+    const actionRow = $("#actionRow");
+
+    likeBtn?.addEventListener("click", ()=>{
+      state.likes[c.id] = (state.likes[c.id]||0) + 1;
+      save();
+      likeNum.textContent = state.likes[c.id];
+      renderQuickStats();
+      renderCards();
+
+      // easter: for smile card, triple-like triggers
+      if(c.id === "c_smile"){
+        state.streak = (state.streak||0) + 1;
+        if(state.streak >= 3){
+          state.streak = 0;
+          save();
+          confetti();
+          res.textContent = "彩蛋触发：你点亮了“笑容彩蛋”🎉";
+        }else{
+          save();
+          res.textContent = `彩蛋进度：${state.streak}/3（再点几次试试）`;
+        }
+      }else{
+        state.streak = 0; save();
+      }
+    });
+
+    collectBtn?.addEventListener("click", ()=>{
+      if(!state.collected.includes(c.id)){
+        state.collected.push(c.id);
+        save();
+        renderQuickStats();
+        renderCards();
+        collectBtn.textContent = "✅ 已收藏";
+        res.textContent = "已加入你的卡册！";
+      }else{
+        res.textContent = "已经在卡册里啦～";
+      }
+    });
+
+    nextBtn?.addEventListener("click", ()=>{
+      const next = CARDS[Math.floor(Math.random()*CARDS.length)];
+      openCard(next.id);
+    });
+
+    actionRow?.addEventListener("click", (e)=>{
+      const btn = e.target.closest("button[data-act]");
+      if(!btn) return;
+      const type = btn.getAttribute("data-act");
+      handleAction(type, res);
+    });
+  },0);
+}
+
+function handleAction(type, resEl){
+  const prompts = [
+    "用 7 个字形容今天的心情。",
+    "用一个表情写一句祝福。",
+    "给自己一个 3 天后可完成的小目标。",
+    "写一句“我选择坚持，因为…”。",
+    "用‘光’造一个句子。"
+  ];
+  const shots = [
+    "镜头任务：慢慢走两步 → 回头 → 定格 2 秒。",
+    "镜头任务：抬头看远处 → 微笑 → 轻点头。",
+    "镜头任务：手插口袋 → 侧身 → 眨眼结束。",
+    "镜头任务：向左看 → 向右看 → 镜头外挥手。"
+  ];
+  const styles = ["黑白极简","运动机能","复古牛仔","学院风","清爽白衬衫","冬日大衣","帽子+耳机","同色系叠穿"];
+  const luck = ["今天适合做一件小事并把它做完。","别急，慢一点反而更稳。","给自己多一点肯定。","把注意力放回当下，你会更强。","好运在路上，先走起来。"];
+
+  if(type==="prompt"){
+    resEl.textContent = "挑战题：" + prompts[Math.floor(Math.random()*prompts.length)];
+  }else if(type==="shot"){
+    resEl.textContent = shots[Math.floor(Math.random()*shots.length)];
+  }else if(type==="style"){
+    resEl.textContent = "穿搭关键词：" + styles[Math.floor(Math.random()*styles.length)] + "（可复制到留言墙当打卡）";
+  }else if(type==="luck"){
+    resEl.textContent = "好运签：" + luck[Math.floor(Math.random()*luck.length)];
+  }else if(type==="draw"){
+    const next = CARDS[Math.floor(Math.random()*CARDS.length)];
+    openCard(next.id);
+    return;
+  }else if(type==="confetti"){
+    confetti();
+    resEl.textContent = "已放彩纸～";
+  }else if(type==="goto_mem"){
+    closeModal();
+    location.hash = "#games";
+    setTimeout(()=> $("#startMemBtn").focus(), 150);
+    resEl.textContent = "";
+  }else if(type==="goto_wall"){
+    closeModal();
+    location.hash = "#wall";
+    setTimeout(()=> $("#msgInput").focus(), 150);
+  }else if(type==="copy_bless"){
+    const txt = "愿你我都能在喜欢里保持热爱与成长。";
+    navigator.clipboard?.writeText(txt);
+    resEl.textContent = "已复制到剪贴板：" + txt;
+  }else if(type==="triple_like"){
+    // hint: user can spam like button; keep separate action too
+    resEl.textContent = "提示：用上面的“❤️ 点赞”连点 3 次触发彩蛋～";
+  }else if(type==="beat"){
+    beatStart(resEl);
+  }else if(type==="focus"){
+    focusChallenge(resEl);
+  }else{
+    resEl.textContent = "（这个按钮还没接功能）";
+  }
+}
+
+/** ======================
+ *  Draw & album
+ *  ====================== */
+function drawCard(){
+  const c = CARDS[Math.floor(Math.random()*CARDS.length)];
+  openCard(c.id);
+}
+$("#drawBtn").addEventListener("click", drawCard);
+$("#drawBtn2").addEventListener("click", drawCard);
+
+$("#openAlbumBtn").addEventListener("click", ()=>{
+  const items = state.collected.map(id=> CARDS.find(c=>c.id===id)).filter(Boolean);
+  const html = items.length ? `
+    <div class="sub" style="margin-top:0">你的收藏（${items.length} 张）</div>
+    <div class="miniCards" style="margin-top:10px">
+      ${items.map(c=>{
+        const p = PHOTOS.find(x=>x.id===c.photo)||PHOTOS[0];
+        return `
+          <div class="mCard" style="grid-column:span 6" data-open="${c.id}">
+            <div class="mImg" style="height:140px"><img loading="lazy" src="${p.img}" alt="${escapeHtml(c.title)}"></div>
+            <div class="mBody">
+              <div class="mTitle"><b>${c.emoji} ${escapeHtml(c.title)}</b><span class="mTag">❤️ ${cardLikes(c.id)}</span></div>
+              <div class="mDesc">${escapeHtml(c.tag)}</div>
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  ` : `<div class="sub" style="margin-top:0">你的卡册还是空的。去点几张卡收藏一下吧～</div>`;
+
+  openModal("我的卡册", `
+    ${html}
+    <div class="row" style="margin-top:12px">
+      <button class="btn" type="button" id="exportAlbumBtn">📤 导出收藏ID</button>
+      <button class="btn" type="button" id="closeAlbumBtn">关闭</button>
+    </div>
+  `);
+
+  setTimeout(()=>{
+    $$(".mCard[data-open]").forEach(el=>{
+      el.addEventListener("click", ()=> openCard(el.getAttribute("data-open")));
+    });
+    $("#exportAlbumBtn")?.addEventListener("click", ()=>{
+      const txt = JSON.stringify(state.collected, null, 2);
+      navigator.clipboard?.writeText(txt);
+      $("#modalBody").querySelector(".sub").textContent = "已复制收藏 ID 到剪贴板（也可当备份）";
+    });
+    $("#closeAlbumBtn")?.addEventListener("click", closeModal);
+  },0);
+});
+
+$("#clearAlbumBtn").addEventListener("click", ()=>{
+  state.collected = [];
+  save();
+  renderQuickStats();
+  renderCards();
+  confetti();
+});
+
+/** ======================
+ *  Confetti
+ *  ====================== */
+const confBox = $("#confetti");
+function confetti(){
+  const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduced) return;
+  confBox.innerHTML = "";
+  confBox.classList.add("show");
+  const n = 80;
+  for(let i=0;i<n;i++){
+    const d = document.createElement("div");
+    d.className = "c";
+    const x = Math.random()*100;
+    const x2 = x + (Math.random()*30 - 15);
+    d.style.setProperty("--x", x+"vw");
+    d.style.setProperty("--x2", x2+"vw");
+    d.style.left = "0";
+    d.style.top = "-10vh";
+    d.style.animationDuration = (2.2 + Math.random()*1.6) + "s";
+    d.style.animationDelay = (Math.random()*0.15) + "s";
+    // no fixed colors? Use currentColor mix based on theme via HSL
+    const hue = Math.floor(Math.random()*360);
+    d.style.background = `hsl(${hue} 85% 60%)`;
+    confBox.appendChild(d);
+  }
+  setTimeout(()=> confBox.classList.remove("show"), 3200);
+}
+$("#confettiBtn").addEventListener("click", confetti);
+
+/** ======================
+ *  Quiz (3 Q)
+ *  ====================== */
+const QUIZ = [
+  {q:"你更想先玩哪一种？", a:["抽卡收藏","记忆翻牌","留言打卡"], right: 0},
+  {q:"看到喜欢的照片时你会？", a:["点开大图","保存来源链接","写一句感想"], right: 2},
+  {q:"你更偏爱这个小站的哪点？", a:["轻量离线","互动按钮多","界面好看"], right: 1}
+];
+function renderQuiz(){
+  const box = $("#quiz");
+  box.innerHTML = "";
+  QUIZ.forEach((it, idx)=>{
+    const div = document.createElement("div");
+    div.style.marginBottom = "12px";
+    div.innerHTML = `
+      <div style="font-weight:800; margin-bottom:8px">${idx+1}. ${escapeHtml(it.q)}</div>
+      <div class="row" style="gap:8px; align-items:stretch; flex-wrap:wrap">
+        ${it.a.map((x,i)=>`<button class="pill" type="button" data-q="${idx}" data-a="${i}">👉 ${escapeHtml(x)}</button>`).join("")}
+      </div>
+      <div class="sub" id="qa_${idx}" style="margin:8px 0 0"></div>
+    `;
+    box.appendChild(div);
+  });
+  box.insertAdjacentHTML("beforeend", `
+    <div class="row" style="margin-top:8px">
+      <button class="btn primary" id="quizFinishBtn" type="button">提交并拿称号</button>
+      <span class="chip" style="pointer-events:none">得分：<b id="quizScore">0</b> / ${QUIZ.length}</span>
+    </div>
+    <div class="sub" id="quizResult" style="margin-top:10px"></div>
+  `);
+
+  const answers = new Array(QUIZ.length).fill(null);
+  let score = 0;
+
+  box.addEventListener("click", (e)=>{
+    const btn = e.target.closest("button[data-q]");
+    if(!btn) return;
+    const q = +btn.getAttribute("data-q");
+    const a = +btn.getAttribute("data-a");
+    answers[q] = a;
+    // feedback
+    const ok = (a === QUIZ[q].right);
+    $("#qa_"+q).textContent = ok ? "✅ 这个选项很符合“娱乐向玩法”～" : "🟡 也不错，不过换个选项可能更“互动”";
+    // recompute score
+    score = answers.reduce((s, aa, i)=> s + (aa===QUIZ[i].right ? 1 : 0), 0);
+    $("#quizScore").textContent = score;
+  });
+
+  $("#quizFinishBtn").addEventListener("click", ()=>{
+    if(answers.some(x=>x===null)){
+      $("#quizResult").textContent = "先把 3 题都点完再提交～";
+      return;
+    }
+    const title =
+      score===3 ? "🏆 互动站“全勤玩家”" :
+      score===2 ? "🌟 快乐氛围组" :
+      "🍀 随缘但真诚";
+    $("#quizResult").textContent = `你的称号：${title}（得分 ${score}/${QUIZ.length}）`;
+    if(score>=2) confetti();
+  });
+}
+renderQuiz();
+
+/** ======================
+ *  Memory game (6 pairs)
+ *  ====================== */
+let memTimer = null;
+let memStart = 0;
+let memOpen = [];
+let memMatched = 0;
+
+function buildMemDeck(){
+  // pick 6 photos (all)
+  const picks = [...PHOTOS].slice(0,6);
+  const deck = [];
+  picks.forEach(p=>{
+    deck.push({k:p.id, img:p.img, title:p.title});
+    deck.push({k:p.id, img:p.img, title:p.title});
+  });
+  // shuffle
+  deck.sort(()=> Math.random()-0.5);
+  return deck;
+}
+
+let memDeck = buildMemDeck();
+
+function renderMem(){
+  const grid = $("#memGrid");
+  grid.innerHTML = "";
+  $("#memMatch").textContent = memMatched;
+  memDeck.forEach((c, idx)=>{
+    const cell = document.createElement("div");
+    cell.className = "card";
+    cell.style.gridColumn = "span 4";
+    cell.style.borderRadius = "16px";
+    cell.style.cursor = "pointer";
+    cell.style.userSelect = "none";
+    cell.dataset.i = idx;
+    cell.dataset.k = c.k;
+    cell.dataset.open = "0";
+    cell.dataset.done = "0";
+    cell.innerHTML = `
+      <div style="height: 96px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:800">
+        点击翻牌
+      </div>
+    `;
+    grid.appendChild(cell);
+  });
+}
+renderMem();
+
+function startMem(){
+  memDeck = buildMemDeck();
+  memOpen = [];
+  memMatched = 0;
+  renderMem();
+  $("#memTime").textContent = "0.0";
+
+  if(memTimer) clearInterval(memTimer);
+  memStart = performance.now();
+  memTimer = setInterval(()=>{
+    const t = (performance.now()-memStart)/1000;
+    $("#memTime").textContent = t.toFixed(1);
+  }, 100);
+}
+
+function reveal(cell){
+  const idx = +cell.dataset.i;
+  const c = memDeck[idx];
+  cell.dataset.open = "1";
+  cell.innerHTML = `
+    <div style="height:96px; overflow:hidden">
+      <img src="${c.img}" alt="${escapeHtml(c.title)}" style="width:100%; height:100%; object-fit:cover; display:block">
+    </div>
+  `;
+}
+
+function hide(cell){
+  cell.dataset.open = "0";
+  cell.innerHTML = `
+    <div style="height: 96px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:800">
+      点击翻牌
+    </div>
+  `;
+}
+
+$("#memGrid").addEventListener("click", (e)=>{
+  const cell = e.target.closest(".card");
+  if(!cell || cell.dataset.done==="1") return;
+  if(cell.dataset.open==="1") return;
+  if(!memTimer) return; // not started yet
+
+  reveal(cell);
+  memOpen.push(cell);
+
+  if(memOpen.length === 2){
+    const [a,b] = memOpen;
+    const same = a.dataset.k === b.dataset.k;
+    if(same){
+      a.dataset.done = "1";
+      b.dataset.done = "1";
+      memMatched++;
+      $("#memMatch").textContent = memMatched;
+      memOpen = [];
+      if(memMatched >= 6){
+        clearInterval(memTimer);
+        memTimer = null;
+        const t = (performance.now()-memStart)/1000;
+        if(state.best == null || t < state.best){
+          state.best = t;
+          save();
+          renderQuickStats();
+        }
+        confetti();
+        openModal("恭喜通关！", `
+          <div style="font-weight:900; font-size:18px; margin-bottom:10px">✅ 你完成了全部匹配</div>
+          <div class="sub" style="margin-top:0">用时：<b>${t.toFixed(1)}s</b>（最佳：${state.best.toFixed(1)}s）</div>
+          <div class="row" style="margin-top:12px">
+            <button class="btn primary" type="button" id="playAgainBtn">再来一局</button>
+            <button class="btn" type="button" id="closeWinBtn">关闭</button>
+          </div>
+        `);
+        setTimeout(()=>{
+          $("#playAgainBtn")?.addEventListener("click", ()=>{ closeModal(); startMem(); });
+          $("#closeWinBtn")?.addEventListener("click", closeModal);
+        },0);
+      }
+    }else{
+      setTimeout(()=>{
+        hide(a); hide(b);
+        memOpen = [];
+      }, 520);
+    }
+  }
+});
+
+$("#startMemBtn").addEventListener("click", startMem);
+$("#restartMemBtn").addEventListener("click", startMem);
+
+/** ======================
+ *  Message wall
+ *  ====================== */
+const TOPICS = [
+  "写一句你最喜欢的“坚持”关键词。",
+  "用 10 个字打卡今天的心情。",
+  "如果有一张卡要送给未来的自己，你会写什么？",
+  "写一句温柔但坚定的祝福。",
+  "用一个emoji串成一句话。"
+];
+
+function uuid(){ return Math.random().toString(16).slice(2) + Date.now().toString(16); }
+
+function renderMessages(){
+  const list = $("#msgList");
+  list.innerHTML = "";
+
+  let msgs = [...state.messages];
+  if(state.msgSort === "hot"){
+    msgs.sort((a,b)=> (b.likes||0) - (a.likes||0) || b.ts - a.ts);
+  }else{
+    msgs.sort((a,b)=> b.ts - a.ts);
+  }
+  // pin first
+  const pinned = msgs.filter(m=>m.pin);
+  const rest = msgs.filter(m=>!m.pin);
+  msgs = [...pinned, ...rest];
+
+  if(!msgs.length){
+    $("#emptyTip").style.display = "block";
+    return;
+  }
+  $("#emptyTip").style.display = "none";
+
+  msgs.forEach(m=>{
+    const div = document.createElement("div");
+    div.className = "msg";
+    div.innerHTML = `
+      <div class="msgTop">
+        <div class="msgName">${escapeHtml(m.name || "匿名")} ${m.pin ? '<span class="chip" style="padding:3px 8px; font-size:11px; margin-left:6px; pointer-events:none">📌 置顶</span>' : ""}</div>
+        <div class="msgTime">${fmtTime(m.ts)}</div>
+      </div>
+      <div class="msgText">${escapeHtml(m.text)}</div>
+      <div class="msgActions">
+        <button class="pill" type="button" data-like="${m.id}">❤️ 点赞 <b>${m.likes||0}</b></button>
+        <button class="pill" type="button" data-pin="${m.id}">${m.pin ? "取消置顶" : "📌 置顶"}</button>
+        <button class="pill" type="button" data-copy="${m.id}">📋 复制</button>
+        <button class="pill" type="button" data-del="${m.id}">🗑️ 删除</button>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function postMessage(){
+  const name = $("#nameInput").value.trim().slice(0,20);
+  const text = $("#msgInput").value.trim().slice(0,240);
+  if(!text){
+    $("#msgInput").focus();
+    return;
+  }
+  state.messages.push({id:uuid(), name, text, ts:Date.now(), likes:0, pin:false});
+  $("#msgInput").value = "";
+  save();
+  renderMessages();
+  confetti();
+}
+
+$("#postBtn").addEventListener("click", postMessage);
+$("#msgInput").addEventListener("keydown", (e)=>{
+  if(e.ctrlKey && e.key==="Enter") postMessage();
+});
+
+$("#randomPromptBtn").addEventListener("click", ()=>{
+  const t = TOPICS[Math.floor(Math.random()*TOPICS.length)];
+  $("#msgInput").value = t + "\n";
+  $("#msgInput").focus();
+});
+
+$("#msgList").addEventListener("click", (e)=>{
+  const like = e.target.closest("[data-like]");
+  const pin = e.target.closest("[data-pin]");
+  const copy = e.target.closest("[data-copy]");
+  const del  = e.target.closest("[data-del]");
+  if(like){
+    const id = like.getAttribute("data-like");
+    const m = state.messages.find(x=>x.id===id);
+    if(m){ m.likes = (m.likes||0)+1; save(); renderMessages(); }
+  }else if(pin){
+    const id = pin.getAttribute("data-pin");
+    const m = state.messages.find(x=>x.id===id);
+    if(m){ m.pin = !m.pin; save(); renderMessages(); }
+  }else if(copy){
+    const id = copy.getAttribute("data-copy");
+    const m = state.messages.find(x=>x.id===id);
+    if(m){ navigator.clipboard?.writeText(m.text); }
+  }else if(del){
+    const id = del.getAttribute("data-del");
+    state.messages = state.messages.filter(x=>x.id!==id);
+    save(); renderMessages();
+  }
+});
+
+$("#sortHotBtn").addEventListener("click", ()=>{ state.msgSort="hot"; save(); renderMessages(); });
+$("#sortNewBtn").addEventListener("click", ()=>{ state.msgSort="new"; save(); renderMessages(); });
+$("#clearMsgBtn").addEventListener("click", ()=>{
+  state.messages = [];
+  save();
+  renderMessages();
+});
+
+renderMessages();
+
+/** ======================
+ *  Reset
+ *  ====================== */
+$("#resetGamesBtn").addEventListener("click", ()=>{
+  state.best = null;
+  save();
+  renderQuickStats();
+  confetti();
+});
+
+/** ======================
+ *  Fun: Beat & Focus
+ *  ====================== */
+let audioCtx = null;
+function beep(freq=440, dur=0.08){
+  const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduced) return;
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.frequency.value = freq;
+    o.type = "sine";
+    g.gain.value = 0.04;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start();
+    setTimeout(()=>{ o.stop(); }, dur*1000);
+  }catch(e){}
+}
+
+function beatStart(resEl){
+  resEl.innerHTML = `
+    <div class="sub" style="margin-top:0">节奏挑战：看到“●”就点按钮（10 次）。</div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn primary" type="button" id="tapBtn">● 点我</button>
+      <span class="chip" style="pointer-events:none">连击：<b id="tapN">0</b>/10</span>
+    </div>
+  `;
+  let n = 0;
+  const tapBtn = $("#tapBtn");
+  const tapN = $("#tapN");
+  tapBtn.addEventListener("click", ()=>{
+    n++;
+    tapN.textContent = n;
+    beep(520 + n*10, 0.06);
+    if(n>=10){
+      confetti();
+      resEl.innerHTML = "✅ 完成！连击 10/10，今天的你节奏很稳～";
+    }
+  });
+}
+
+function focusChallenge(resEl){
+  resEl.innerHTML = `
+    <div class="sub" style="margin-top:0">专注挑战：10 秒内把小点点“跟住”并点 10 次。</div>
+    <div style="position:relative; height:140px; border:1px solid var(--line); border-radius:16px; overflow:hidden; background: color-mix(in srgb, var(--card) 92%, transparent)">
+      <div id="dot" style="position:absolute; width:14px; height:14px; border-radius:999px; background: var(--brand); left:20px; top:40px"></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn primary" type="button" id="focusStartBtn">开始</button>
+      <span class="chip" style="pointer-events:none">点击：<b id="dotN">0</b>/10</span>
+      <span class="chip" style="pointer-events:none">剩余：<b id="dotT">10</b>s</span>
+    </div>
+  `;
+  const dot = $("#dot");
+  const startBtn = $("#focusStartBtn");
+  const dotN = $("#dotN");
+  const dotT = $("#dotT");
+
+  let running = false, clicks = 0, t=10, timer=null, mover=null;
+  dot.addEventListener("click", ()=>{
+    if(!running) return;
+    clicks++; dotN.textContent = clicks;
+    beep(660, 0.05);
+    if(clicks>=10){
+      running=false;
+      clearInterval(timer); clearInterval(mover);
+      confetti();
+      resEl.innerHTML = "🏆 专注挑战成功！你很稳。";
+    }
+  });
+
+  startBtn.addEventListener("click", ()=>{
+    if(running) return;
+    running=true; clicks=0; t=10;
+    dotN.textContent="0"; dotT.textContent="10";
+    // move dot
+    mover = setInterval(()=>{
+      const x = 10 + Math.random()*85;
+      const y = 10 + Math.random()*75;
+      dot.style.left = x + "%";
+      dot.style.top = y + "%";
+    }, 550);
+    timer = setInterval(()=>{
+      t--;
+      dotT.textContent = t;
+      if(t<=0){
+        running=false;
+        clearInterval(timer); clearInterval(mover);
+        resEl.innerHTML = `⏱️ 时间到！你点了 ${clicks}/10 次。再来一次一定行～`;
+      }
+    }, 1000);
+  });
+}
+
+/** ======================
+ *  Hook: update stats on load
+ *  ====================== */
+window.addEventListener("load", ()=>{
+  renderQuickStats();
+});
+</script>
+</body>
+</html>
