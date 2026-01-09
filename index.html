@@ -352,6 +352,23 @@
     .credits a{color: color-mix(in srgb, var(--brand) 75%, var(--text)); text-decoration:none}
     .credits a:hover{text-decoration:underline}
 
+    /* countdown */
+    .countdownBar{
+      position:relative;
+      z-index:60;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 25%, var(--bg)), color-mix(in srgb, var(--brand2) 16%, var(--bg)));
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+    }
+    .cdInner{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding: 10px 0;
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+    .cdLabel{font-weight:800; letter-spacing:.2px;}
+    .cdTime{font-family: "JetBrains Mono","SFMono-Regular",Consolas,monospace; font-weight:700;}
+
     /* modal */
     .modalBack{
       position:fixed; inset:0;
@@ -424,6 +441,12 @@
 </head>
 
 <body>
+  <div class="countdownBar" aria-live="polite">
+    <div class="wrap cdInner">
+      <div class="cdLabel">见面倒计时 · 2026.01.16</div>
+      <div class="cdTime" id="countdownText">计算中...</div>
+    </div>
+  </div>
   <div class="topbar">
     <div class="wrap">
       <div class="inner">
@@ -653,42 +676,48 @@ const PHOTOS = [
   {
     id: "p_2024_tiff",
     title: "东京国际电影节 · 2024",
-    img: "https://commons.wikimedia.org/wiki/Special:FilePath/2024%20Jackson%20Yee.jpg?width=1400",
+    img: "https://images.weserv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/2024%20Jackson%20Yee.jpg&w=960&output=webp",
+    fallback: "https://commons.wikimedia.org/wiki/Special:FilePath/2024%20Jackson%20Yee.jpg",
     link: "https://commons.wikimedia.org/wiki/File:2024_Jackson_Yee.jpg",
     credit: "Siup00 / CC BY-SA 4.0"
   },
   {
     id: "p_2025_concert",
     title: "Que Xue Concert · 2025",
-    img: "https://commons.wikimedia.org/wiki/Special:FilePath/Jackson%20Yee%20at%20Que%20Xue%20Concert%20in%202025.jpg?width=1400",
+    img: "https://images.weserv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/Jackson%20Yee%20at%20Que%20Xue%20Concert%20in%202025.jpg&w=960&output=webp",
+    fallback: "https://commons.wikimedia.org/wiki/Special:FilePath/Jackson%20Yee%20at%20Que%20Xue%20Concert%20in%202025.jpg",
     link: "https://commons.wikimedia.org/wiki/File:Jackson_Yee_at_Que_Xue_Concert_in_2025.jpg",
     credit: "Siup00 / CC BY-SA 4.0"
   },
   {
     id: "p_singer_2018",
     title: "歌手形象 · 2018",
-    img: "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%AD%8C%E6%89%8B%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA.jpg?width=1200",
+    img: "https://images.weserv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/%E6%AD%8C%E6%89%8B%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA.jpg&w=960&output=webp",
+    fallback: "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%AD%8C%E6%89%8B%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA.jpg",
     link: "https://commons.wikimedia.org/wiki/File:%E6%AD%8C%E6%89%8B%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA.jpg",
     credit: "刹寂_易烊千玺个站 / CC BY-SA 4.0"
   },
   {
     id: "p_adidas_2020",
     title: "Adidas · 2020",
-    img: "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA%E9%98%BF%E8%BF%AA%E8%BE%BE%E6%96%AF.jpg?width=1200",
+    img: "https://images.weserv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA%E9%98%BF%E8%BF%AA%E8%BE%BE%E6%96%AF.jpg&w=960&output=webp",
+    fallback: "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA%E9%98%BF%E8%BF%AA%E8%BE%BE%E6%96%AF.jpg",
     link: "https://commons.wikimedia.org/wiki/File:%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA%E9%98%BF%E8%BF%AA%E8%BE%BE%E6%96%AF.jpg",
     credit: "刹寂_易烊千玺个站 / CC BY-SA 4.0"
   },
   {
     id: "p_2019_suer",
     title: "Su Er Concert · 2019",
-    img: "https://commons.wikimedia.org/wiki/Special:FilePath/2019%20Jackson%20Yee%20Concert.jpg?width=1400",
+    img: "https://images.weserv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/2019%20Jackson%20Yee%20Concert.jpg&w=960&output=webp",
+    fallback: "https://commons.wikimedia.org/wiki/Special:FilePath/2019%20Jackson%20Yee%20Concert.jpg",
     link: "https://commons.wikimedia.org/wiki/File:2019_Jackson_Yee_Concert.jpg",
     credit: "Siup00 / CC BY-SA 4.0"
   },
   {
     id: "p_2019_cute",
     title: "演唱会照片 · 2019",
-    img: "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA_%E5%B8%85%E7%85%A7.jpg?width=1200",
+    img: "https://images.weserv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA_%E5%B8%85%E7%85%A7.jpg&w=960&output=webp",
+    fallback: "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA_%E5%B8%85%E7%85%A7.jpg",
     link: "https://commons.wikimedia.org/wiki/File:%E6%98%93%E7%83%8A%E5%8D%83%E7%8E%BA_%E5%B8%85%E7%85%A7.jpg",
     credit: "_SugarOrSalt_ / CC BY-SA 4.0"
   }
@@ -819,7 +848,10 @@ let heroIndex = 0;
 function setHero(i){
   heroIndex = ((i % PHOTOS.length) + PHOTOS.length) % PHOTOS.length;
   const p = PHOTOS[heroIndex];
-  $("#heroImg").src = p.img;
+  const heroEl = $("#heroImg");
+  heroEl.dataset.fallback = p.fallback || "";
+  heroEl.dataset.tried = "";
+  heroEl.src = p.img;
   $("#heroTitle").textContent = p.title;
   $("#heroCredit").innerHTML = `来源：<a href="${p.link}" target="_blank" rel="noreferrer" style="color:#fff; text-decoration:underline">${p.credit}</a>`;
 }
@@ -849,7 +881,7 @@ function renderPhotos(list){
     div.className = "pItem";
     div.tabIndex = 0;
     div.innerHTML = `
-      <img loading="lazy" alt="${escapeHtml(p.title)}" src="${p.img}">
+      <img loading="lazy" alt="${escapeHtml(p.title)}" src="${p.img}" data-fallback="${p.fallback||""}">
       <div class="pCap"><b>${escapeHtml(p.title)}</b><br/><span style="opacity:.86">${escapeHtml(p.credit)}</span></div>
     `;
     div.addEventListener("click", ()=> openPhotoModal(p));
@@ -870,6 +902,14 @@ $("#shufflePhotosBtn").addEventListener("click", ()=>{
 const modalBack = $("#modalBack");
 const modalBody = $("#modalBody");
 const modalTitle = $("#modalTitle");
+// 图片加载失败时尝试备用源（data-fallback）
+document.addEventListener("error", (e)=>{
+  const t = e.target;
+  if(t.tagName === "IMG" && t.dataset.fallback && !t.dataset.tried){
+    t.dataset.tried = "1";
+    t.src = t.dataset.fallback;
+  }
+}, true);
 function openModal(title, html){
   modalTitle.textContent = title;
   modalBody.innerHTML = html;
@@ -882,10 +922,32 @@ $("#modalClose").addEventListener("click", closeModal);
 modalBack.addEventListener("click", (e)=>{ if(e.target === modalBack) closeModal(); });
 document.addEventListener("keydown", (e)=>{ if(e.key==="Escape" && modalBack.classList.contains("show")) closeModal(); });
 
+/** ======================
+ *  Countdown
+ *  ====================== */
+const MEET_TS = new Date("2026-01-16T00:00:00+08:00").getTime();
+function updateCountdown(){
+  const el = $("#countdownText");
+  if(!el) return;
+  const diff = MEET_TS - Date.now();
+  if(diff <= 0){
+    el.textContent = "就在今天，见面啦！";
+    return;
+  }
+  const s = Math.floor(diff/1000);
+  const d = Math.floor(s/86400);
+  const h = Math.floor((s%86400)/3600);
+  const m = Math.floor((s%3600)/60);
+  const sec = s%60;
+  el.textContent = `距离 2026.01.16：${d} 天 ${h} 小时 ${m} 分 ${sec} 秒`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
 function openPhotoModal(p){
   openModal("照片查看", `
     <div style="display:grid; grid-template-columns: 1fr; gap:12px">
-      <img alt="${escapeHtml(p.title)}" src="${p.img}" style="width:100%; border-radius:18px; border:1px solid var(--line); background:var(--bg2)" />
+      <img alt="${escapeHtml(p.title)}" src="${p.img}" data-fallback="${p.fallback||""}" style="width:100%; border-radius:18px; border:1px solid var(--line); background:var(--bg2)" />
       <div class="row" style="justify-content:space-between; align-items:flex-start; gap:12px">
         <div>
           <div style="font-weight:800; font-size:16px">${escapeHtml(p.title)}</div>
@@ -933,7 +995,7 @@ function renderCards(){
     div.className = "mCard";
     div.tabIndex = 0;
     div.innerHTML = `
-      <div class="mImg"><img loading="lazy" alt="${escapeHtml(c.title)}" src="${p.img}"></div>
+      <div class="mImg"><img loading="lazy" alt="${escapeHtml(c.title)}" src="${p.img}" data-fallback="${p.fallback||""}"></div>
       <div class="mBody">
         <div class="mTitle">
           <b>${c.emoji} ${escapeHtml(c.title)}</b>
@@ -965,7 +1027,7 @@ function openCard(cardId){
 
   openModal("人物小卡", `
     <div style="display:grid; grid-template-columns: 1fr; gap:12px">
-      <img alt="${escapeHtml(c.title)}" src="${p.img}" style="width:100%; max-height:380px; object-fit:cover; border-radius:18px; border:1px solid var(--line)" />
+      <img alt="${escapeHtml(c.title)}" src="${p.img}" data-fallback="${p.fallback||""}" style="width:100%; max-height:380px; object-fit:cover; border-radius:18px; border:1px solid var(--line)" />
       <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:flex-start">
         <div>
           <div style="font-weight:900; font-size:18px">${c.emoji} ${escapeHtml(c.title)}</div>
@@ -1129,7 +1191,7 @@ $("#openAlbumBtn").addEventListener("click", ()=>{
         const p = PHOTOS.find(x=>x.id===c.photo)||PHOTOS[0];
         return `
           <div class="mCard" style="grid-column:span 6" data-open="${c.id}">
-            <div class="mImg" style="height:140px"><img loading="lazy" src="${p.img}" alt="${escapeHtml(c.title)}"></div>
+            <div class="mImg" style="height:140px"><img loading="lazy" src="${p.img}" data-fallback="${p.fallback||""}" alt="${escapeHtml(c.title)}"></div>
             <div class="mBody">
               <div class="mTitle"><b>${c.emoji} ${escapeHtml(c.title)}</b><span class="mTag">❤️ ${cardLikes(c.id)}</span></div>
               <div class="mDesc">${escapeHtml(c.tag)}</div>
@@ -1198,6 +1260,21 @@ function confetti(){
   setTimeout(()=> confBox.classList.remove("show"), 3200);
 }
 $("#confettiBtn").addEventListener("click", confetti);
+
+function showWelcome(){
+  openModal("欢迎来到秦司千世界", `
+    <div class="sub" style="margin-top:0">欢迎来到秦司千世界，点击确认后放一波烟花庆祝～</div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn primary" type="button" id="welcomeOkBtn">确认</button>
+    </div>
+  `);
+  setTimeout(()=>{
+    $("#welcomeOkBtn")?.addEventListener("click", ()=>{
+      closeModal();
+      confetti();
+    });
+  }, 0);
+}
 
 /** ======================
  *  Quiz (3 Q)
@@ -1275,8 +1352,8 @@ function buildMemDeck(){
   const picks = [...PHOTOS].slice(0,6);
   const deck = [];
   picks.forEach(p=>{
-    deck.push({k:p.id, img:p.img, title:p.title});
-    deck.push({k:p.id, img:p.img, title:p.title});
+    deck.push({k:p.id, img:p.img, fallback:p.fallback, title:p.title});
+    deck.push({k:p.id, img:p.img, fallback:p.fallback, title:p.title});
   });
   // shuffle
   deck.sort(()=> Math.random()-0.5);
@@ -1331,7 +1408,7 @@ function reveal(cell){
   cell.dataset.open = "1";
   cell.innerHTML = `
     <div style="height:96px; overflow:hidden">
-      <img src="${c.img}" alt="${escapeHtml(c.title)}" style="width:100%; height:100%; object-fit:cover; display:block">
+      <img src="${c.img}" data-fallback="${c.fallback||""}" alt="${escapeHtml(c.title)}" style="width:100%; height:100%; object-fit:cover; display:block">
     </div>
   `;
 }
@@ -1621,6 +1698,7 @@ function focusChallenge(resEl){
  *  ====================== */
 window.addEventListener("load", ()=>{
   renderQuickStats();
+  showWelcome();
 });
 </script>
 </body>
